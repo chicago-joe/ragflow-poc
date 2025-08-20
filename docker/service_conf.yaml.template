@@ -64,16 +64,18 @@ redis:
 #   secret: 'secret'
 #   tenant_id: 'tenant_id'
 #   container_name: 'container_name'
-# user_default_llm:
-#   factory: 'Tongyi-Qianwen'
-#   api_key: 'sk-xxxxxxxxxxxxx'
-#   base_url: ''
-#   default_models:
-#     chat_model: 'qwen-plus'
-#     embedding_model: 'BAAI/bge-large-zh-v1.5@BAAI'
-#     rerank_model: ''
-#     asr_model: ''
-#     image2text_model: ''
+# Default LLM configuration for new users (configure in .env file)
+# Uncomment the following lines and set LLM_FACTORY, API_KEY in .env to enable
+user_default_llm:
+  factory: '${LLM_FACTORY:-Ollama}'
+  api_key: '${API_KEY:-}'
+  base_url: '${LLM_BASE_URL:-http://ollama:11434/v1}'
+  default_models:
+    chat_model: '${CHAT_MDL:-llama3.2}'
+    embedding_model: '${EMBEDDING_MDL:-bge-m3}'
+    rerank_model: '${RERANK_MDL:-}'
+    asr_model: '${ASR_MDL:-}'
+    image2text_model: '${IMAGE2TEXT_MDL:-llama3.2}'
 # oauth:
 #   oauth2:
 #     display_name: "OAuth2"

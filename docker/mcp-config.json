@@ -1,0 +1,80 @@
+{
+  "name": "ragflow-dev-mcp",
+  "description": "RAGFlow Development Environment MCP Configuration",
+  "version": "1.0.0",
+  "mcps": {
+    "docker-compose": {
+      "command": "docker-compose",
+      "args": ["-f", "/workspace/ragflow/docker/docker-compose.yml"],
+      "env": {
+        "COMPOSE_PROJECT_NAME": "ragflow-dev",
+        "DOCKER_BUILDKIT": "1"
+      }
+    },
+    "python-env": {
+      "command": "/workspace/.venv/bin/python",
+      "args": [],
+      "env": {
+        "PYTHONPATH": "/workspace:/workspace/app:/workspace/ragflow",
+        "RAGFLOW_API_URL": "http://ragflow:9380"
+      }
+    },
+    "ragflow-sdk": {
+      "command": "/workspace/.venv/bin/python",
+      "args": ["-m", "ragflow_sdk"],
+      "env": {
+        "RAGFLOW_API_URL": "http://ragflow:9380"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "test_ragflow_connection",
+      "description": "Test RAGFlow API connection",
+      "command": "/workspace/.venv/bin/python",
+      "args": ["/workspace/scripts/ragflow_helper.py"]
+    },
+    {
+      "name": "start_jupyter",
+      "description": "Start Jupyter Lab server",
+      "command": "/workspace/.venv/bin/python",
+      "args": ["-m", "jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+    },
+    {
+      "name": "run_tests",
+      "description": "Run pytest test suite",
+      "command": "/workspace/.venv/bin/python",
+      "args": ["-m", "pytest", "/workspace/app", "-v"]
+    },
+    {
+      "name": "format_code",
+      "description": "Format Python code with black",
+      "command": "/workspace/.venv/bin/python",
+      "args": ["-m", "black", "/workspace/app"]
+    },
+    {
+      "name": "lint_code",
+      "description": "Lint Python code with pylint",
+      "command": "/workspace/.venv/bin/python",
+      "args": ["-m", "pylint", "/workspace/app"]
+    }
+  ],
+  "volumes": {
+    "workspace": "/workspace",
+    "app": "/workspace/app",
+    "notebooks": "/workspace/notebooks",
+    "data": "/workspace/data",
+    "scripts": "/workspace/scripts",
+    "ragflow": "/workspace/ragflow"
+  },
+  "ports": {
+    "ssh": 2222,
+    "jupyter": 8888,
+    "debugpy": 5678
+  },
+  "interpreter": {
+    "path": "/workspace/.venv/bin/python",
+    "version": "3.11.13",
+    "virtual_env": "/workspace/.venv"
+  }
+}
